@@ -7,6 +7,7 @@ extern crate serde_derive;
 #[macro_use]
 extern crate structopt;
 
+use std::process::Command;
 use std::error::Error;
 use structopt::StructOpt;
 
@@ -57,11 +58,19 @@ fn get_speaker(uuid: &str, verbose: &bool) -> Result<Speaker, Box<Error>> {
     Ok(s)
 }
 
+fn say_thing(sentence: &str) {
+    let _result = Command::new("say").arg(sentence).status();
+    ()
+}
+
 fn main() {
     let command = Options::from_args();
     // "76606cd0-6261-44b2-ad0e-3518a0e66995"
     let s = get_speaker(&command.speaker_id, &command.verbose).unwrap();
     for t in s.accepted_talks {
-        println!("Talk: {}", &t.title)
+        println!("Talk: {}", &t.title);
+        if command.verbose {
+            say_thing(&t.title);
+        }
     }
 }
