@@ -45,5 +45,7 @@ fn get_speaker(uuid: &str) -> Result<Speaker, Box<Error>> {
 
 fn main() {
     let s = get_speaker("76606cd0-6261-44b2-ad0e-3518a0e66995").unwrap();
-    println!("{:?}", s);
+    for t in s.accepted_talks {
+        println!("Talk: {}", &t.title)
+    }
 }
